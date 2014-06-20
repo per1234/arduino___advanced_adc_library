@@ -45,6 +45,18 @@ public:
   static void setAutoTrigger(bool on) __attribute__((always_inline));
   static void setTriggerSource(uint8_t trigger_source) __attribute__((always_inline));
 
+  static void setBuffer(uint8_t* buffer, uint16_t len) {
+    buffer_len_ = len;
+    buffer8_ = buffer;
+    setLeftAlignResult(true);
+  }
+
+  static void setBuffer(uint16_t* buffer, uint16_t len) {
+    buffer_len_ = len;
+    buffer16_ = buffer;
+    setLeftAlignResult(false);
+  }
+
   template<typename T, size_t N>
   static void setBuffer(T (&buffer)[N]) {
     buffer_len_ = N;
