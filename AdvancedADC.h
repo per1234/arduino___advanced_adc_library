@@ -39,11 +39,20 @@ public:
     return false;
   }
   static void (*update)();
+  static void setAnalogReference(uint8_t ref);
   static void setChannel(uint8_t channel) __attribute__((always_inline));
   static void setPrescaler(uint8_t prescaler) __attribute__((always_inline));
+  static void setSamplingRate(float sampling_rate);
+  static float samplingRate() { return sampling_rate_; }
+  static uint16_t prescaler();
   static void setLeftAlignResult(bool on) __attribute__((always_inline));
   static void setAutoTrigger(bool on) __attribute__((always_inline));
   static void setTriggerSource(uint8_t trigger_source) __attribute__((always_inline));
+  static uint8_t triggerSource() __attribute__((always_inline));
+  static void registerCallback(void (*callback)(uint8_t, uint16_t)) {
+    update = &updateCallback;
+    callback_ = callback;
+  }
 
   static void setBuffer(uint8_t* buffer, uint16_t len) {
     buffer_len_ = len;
@@ -59,23 +68,28 @@ public:
 
   template<typename T, size_t N>
   static void setBuffer(T (&buffer)[N]) {
-    buffer_len_ = N;
-    bool left_align_result = (sizeof(T)==1);
-    if (left_align_result) {
-      buffer8_ = (uint8_t*)buffer;
+    if (sizeof(T)==1) {
+      setBuffer((uint8_t*)buffer, N);
     } else {
-      buffer16_ = (uint16_t*)buffer;
+      setBuffer((uint16_t*)buffer, N);
     }
-    setLeftAlignResult(left_align_result);
   }
 
-  template<typename T, size_t N>
-  static void setChannels(T (&channels)[N]) {
-    channels_ = channels;
-    n_channels_ = N;
-    channel_index_ = 0;
-    update = &updateMultiChannel;
-    _setChannel(channels_[channel_index_]); // set_current_channel
+  static void setChannels(uint8_t* channels, uint8_t N) {
+    if (N == 1) {
+      setChannel(channels[0]);
+    } else {
+      channels_ = channels;
+      n_channels_ = N;
+      channel_index_ = 0;
+      update = &updateMultiChannel;
+      _setChannel(channels_[channel_index_]); // set_current_channel
+    }
+  }
+
+  template<typename uint8_t, size_t N>
+  static void setChannels(uint8_t (&channels)[N]) {
+    setChannels(channels, N);
   }
   
   static void begin() __attribute__((always_inline));
@@ -83,18 +97,30 @@ public:
   static void next() __attribute__((always_inline));
   static void updateSingleChannel() __attribute__((always_inline));
   static void updateMultiChannel() __attribute__((always_inline));
+  static void updateCallback() __attribute__((always_inline));
   static void enableDigitalInputs(bool enabled);
+  static uint16_t currentIndex() { return current_index_; }
+
+  ADCClass();
+
 private:
   static void _setChannel(uint8_t channel) __attribute__((always_inline));
+  static void _startTimer() __attribute__((always_inline));
+  static void _stopTimer() __attribute__((always_inline));
 
   static bool auto_trigger_on_;
   static uint8_t* channels_;
   static uint8_t channel_index_;
   static uint8_t n_channels_;
+  static uint8_t channel_;
   static uint8_t* buffer8_;
   static uint16_t* buffer16_;
   static uint16_t buffer_len_;
   volatile static uint16_t current_index_;
+  static void (*callback_)(uint8_t, uint16_t);
+  static unsigned long t_start_;
+  static float sampling_rate_;
+  static uint8_t clock_select_bits_;
 };
 
 extern ADCClass AdvancedADC;
