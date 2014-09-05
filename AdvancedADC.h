@@ -100,7 +100,7 @@ public:
   static void updateCallback() __attribute__((always_inline));
   static void enableDigitalInputs(bool enabled);
   static uint16_t currentIndex() { return current_index_; }
-
+  static float readVcc();
   ADCClass();
 
 private:

@@ -269,6 +269,33 @@ void ADCClass::updateCallback() {
   }
 }
 
+// read 1.1V reference against AVcc and back-calculate AVcc
+//
+// Note that according to the ATmega2560 datasheet, the 1.1V
+// reference is typically between 1.0 and 1.2 (+/- 9%).
+//
+// See: https://code.google.com/p/tinkerit/wiki/SecretVoltmeter
+float ADCClass::readVcc() {
+  // save state of ADMUX and ADCSRB registers
+  // ADMUX: REFS1 REFS0 ADLAR MUX4 MUX3 MUX2 MUX1 MUX0
+  uint8_t admux = ADMUX;
+  // ADCSRB:  -  ACME  -   -  MUX5 ADTS2 ADTS1 ADTS0
+  uint8_t adcsrb = ADCSRB;
+
+  ADMUX &= ~(0x1F); // clear MUX4:0 on ADMUX register
+  // set MUX4:0 to B11110
+  ADMUX |= (1 << MUX4) | (1 << MUX3) | (1 << MUX2) | (1 << MUX1);
+
+  // clear MUX5 bit on ADCSRB register
+  ADCSRB &= ~(1 << MUX5);
+
+  delay(3); // wait for Vref to settle
+
+  ADCSRA |= (1 << ADSC); // start conversion
+  while (bit_is_set(ADCSRA, ADSC)); // wait for conversion to complete
+  return 1100.0 / (float)ADC_RESULT; // back-calculate AVcc in mV
+}
+
 // interrupt service routine triggered when an ADC conversion completes
 ISR(ADC_vect) {
   (*AdvancedADC.update)();
@@ -282,3 +309,4 @@ ISR(TIMER1_OVF_vect)
 
 // Preinstantiate object
 ADCClass AdvancedADC = ADCClass();
+
