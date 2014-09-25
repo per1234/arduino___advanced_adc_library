@@ -15,6 +15,7 @@ uint8_t ADCClass::channel_index_ = 0;
 void (*ADCClass::update)();
 void (*ADCClass::callback_)(uint8_t, uint16_t);
 float ADCClass::sampling_rate_ = 0;
+float ADCClass::measured_sampling_rate_ = 0;
 unsigned long ADCClass::t_start_;
 uint8_t ADCClass::clock_select_bits_;
 
@@ -79,6 +80,8 @@ void ADCClass::setSamplingRate(float sampling_rate) {
 
   setTriggerSource(ADC_ATS_TIMER1_OVERFLOW);
   setAutoTrigger(true);
+
+  sampling_rate_ = sampling_rate;
 }
 
 void ADCClass::_startTimer() {
@@ -162,7 +165,7 @@ void ADCClass::stop() {
   if (triggerSource() == ADC_ATS_TIMER1_OVERFLOW) {
     _stopTimer();
   }
-  sampling_rate_ = (float)buffer_len_*1e6/(float)(t_end - t_start_);
+  measured_sampling_rate_ = (float)buffer_len_*1e6/(float)(t_end - t_start_);
 }
 
 // publicly available method
@@ -245,7 +248,11 @@ void ADCClass::updateSingleChannel() {
 
 // call the registered callback function
 void ADCClass::updateCallback() {
+  // save the channel index (needed for callback)
+  uint8_t channel_index = channel_index_;
+
   if (n_channels_ > 1) {
+
     // increment the channel index
     if (++channel_index_ == n_channels_) {
       channel_index_ = 0; // wrap around to zero
@@ -264,7 +271,7 @@ void ADCClass::updateCallback() {
     if (ADMUX & (1 << ADLAR)) {
       value = value >> 8;
     }
-    (*callback_)(channel_, value); // call the callback function
+    (*callback_)(channel_index, value); // call the callback function
     current_index_++;
   }
 }
@@ -293,7 +300,13 @@ float ADCClass::readVcc() {
 
   ADCSRA |= (1 << ADSC); // start conversion
   while (bit_is_set(ADCSRA, ADSC)); // wait for conversion to complete
-  return 1100.0 / (float)ADC_RESULT; // back-calculate AVcc in mV
+  float result = 1100.0 /(float)ADC_RESULT; // back-calculate AVcc in mV
+
+  // reset ADMUX and ADCSRB registers to original state
+  ADMUX = admux;
+  ADCSRB = adcsrb;
+
+  return result;
 }
 
 // interrupt service routine triggered when an ADC conversion completes

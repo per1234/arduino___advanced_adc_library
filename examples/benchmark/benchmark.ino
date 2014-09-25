@@ -27,7 +27,7 @@ void setup() {
     AdvancedADC.setChannel(0);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer8[i]) + ", ");
@@ -40,7 +40,7 @@ void setup() {
     AdvancedADC.setChannel(0);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer16[i]) + ", ");
@@ -54,7 +54,7 @@ void setup() {
     AdvancedADC.setChannel(0);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer8[i]) + ", ");
@@ -68,7 +68,7 @@ void setup() {
     AdvancedADC.registerCallback(&callback8);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer8[i]) + ", ");
@@ -82,7 +82,7 @@ void setup() {
     AdvancedADC.setChannel(0);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer16[i]) + ", ");
@@ -96,7 +96,7 @@ void setup() {
     AdvancedADC.registerCallback(&callback16);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer16[i]) + ", ");
@@ -109,7 +109,7 @@ void setup() {
     AdvancedADC.setChannel(0);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer8[i]) + ", ");
@@ -123,7 +123,7 @@ void setup() {
     AdvancedADC.registerCallback(&callback8);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer8[i]) + ", ");
@@ -136,7 +136,7 @@ void setup() {
     AdvancedADC.setChannel(0);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer16[i]) + ", ");
@@ -149,7 +149,7 @@ void setup() {
     AdvancedADC.registerCallback(&callback16);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer16[i]) + ", ");
@@ -175,7 +175,7 @@ void setup() {
     AdvancedADC.setChannels(channels);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer8[i]) + ", ");
@@ -188,7 +188,7 @@ void setup() {
     AdvancedADC.setChannels(channels);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer16[i]) + ", ");
@@ -202,7 +202,7 @@ void setup() {
     AdvancedADC.setChannels(channels);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer8[i]) + ", ");
@@ -216,7 +216,7 @@ void setup() {
     AdvancedADC.registerCallback(&callback8);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer8[i]) + ", ");
@@ -229,7 +229,7 @@ void setup() {
     AdvancedADC.setChannels(channels);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer16[i]) + ", ");
@@ -242,7 +242,7 @@ void setup() {
     AdvancedADC.registerCallback(&callback16);
     AdvancedADC.begin();
     while(!AdvancedADC.finished());
-    Serial.print(1e-3*AdvancedADC.samplingRate());
+    Serial.print(1e-3*AdvancedADC.measuredSamplingRate());
     Serial.print(" kHz: ");
     for (uint8_t i = 0; i < 10; i++) {
       Serial.print(String(buffer16[i]) + ", ");
@@ -265,11 +265,11 @@ void setup() {
   }
 }
 
-void callback16(uint8_t channel, uint16_t value) {
+void callback16(uint8_t channel_index, uint16_t value) {
   buffer16[AdvancedADC.currentIndex()] = value;
 }
 
-void callback8(uint8_t channel, uint16_t value) {
+void callback8(uint8_t channel_index, uint16_t value) {
   buffer8[AdvancedADC.currentIndex()] = value;
 }
 

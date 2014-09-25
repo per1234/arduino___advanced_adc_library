@@ -44,6 +44,7 @@ public:
   static void setPrescaler(uint8_t prescaler) __attribute__((always_inline));
   static void setSamplingRate(float sampling_rate);
   static float samplingRate() { return sampling_rate_; }
+  static float measuredSamplingRate() { return measured_sampling_rate_; }
   static uint16_t prescaler();
   static void setLeftAlignResult(bool on) __attribute__((always_inline));
   static void setAutoTrigger(bool on) __attribute__((always_inline));
@@ -64,6 +65,10 @@ public:
     buffer_len_ = len;
     buffer16_ = buffer;
     setLeftAlignResult(false);
+  }
+
+  static void setBufferLen(uint16_t len) {
+    buffer_len_ = len;
   }
 
   template<typename T, size_t N>
@@ -100,6 +105,7 @@ public:
   static void updateCallback() __attribute__((always_inline));
   static void enableDigitalInputs(bool enabled);
   static uint16_t currentIndex() { return current_index_; }
+  static uint16_t currentChannelIndex() { return channel_index_; }
   static float readVcc();
   ADCClass();
 
@@ -107,7 +113,6 @@ private:
   static void _setChannel(uint8_t channel) __attribute__((always_inline));
   static void _startTimer() __attribute__((always_inline));
   static void _stopTimer() __attribute__((always_inline));
-
   static bool auto_trigger_on_;
   static uint8_t* channels_;
   static uint8_t channel_index_;
@@ -120,6 +125,7 @@ private:
   static void (*callback_)(uint8_t, uint16_t);
   static unsigned long t_start_;
   static float sampling_rate_;
+  static float measured_sampling_rate_;
   static uint8_t clock_select_bits_;
 };
 
