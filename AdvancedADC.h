@@ -31,7 +31,7 @@
 
 class ADCClass {
 public:
-  static bool finished() __attribute__((always_inline)) {
+  static bool finished() {
     if (current_index_ == buffer_len_) {
       stop();
       return true;
@@ -40,16 +40,16 @@ public:
   }
   static void (*update)();
   static void setAnalogReference(uint8_t ref);
-  static void setChannel(uint8_t channel) __attribute__((always_inline));
-  static void setPrescaler(uint8_t prescaler) __attribute__((always_inline));
+  static void setChannel(uint8_t channel);
+  static void setPrescaler(uint8_t prescaler);
   static void setSamplingRate(float sampling_rate);
   static float samplingRate() { return sampling_rate_; }
   static float measuredSamplingRate() { return measured_sampling_rate_; }
   static uint16_t prescaler();
-  static void setLeftAlignResult(bool on) __attribute__((always_inline));
-  static void setAutoTrigger(bool on) __attribute__((always_inline));
-  static void setTriggerSource(uint8_t trigger_source) __attribute__((always_inline));
-  static uint8_t triggerSource() __attribute__((always_inline));
+  static void setLeftAlignResult(bool on);
+  static void setAutoTrigger(bool on);
+  static void setTriggerSource(uint8_t trigger_source);
+  static uint8_t triggerSource();
   static void registerCallback(void (*callback)(uint8_t, uint16_t)) {
     update = &updateCallback;
     callback_ = callback;
@@ -97,12 +97,12 @@ public:
     setChannels(channels, N);
   }
   
-  static void begin() __attribute__((always_inline));
-  static void stop() __attribute__((always_inline));
-  static void next() __attribute__((always_inline));
-  static void updateSingleChannel() __attribute__((always_inline));
-  static void updateMultiChannel() __attribute__((always_inline));
-  static void updateCallback() __attribute__((always_inline));
+  static void begin();
+  static void stop();
+  static void next();
+  static void updateSingleChannel();
+  static void updateMultiChannel();
+  static void updateCallback();
   static void enableDigitalInputs(bool enabled);
   static uint16_t currentIndex() { return current_index_; }
   static uint16_t currentChannelIndex() { return channel_index_; }
@@ -110,9 +110,9 @@ public:
   ADCClass();
 
 private:
-  static void _setChannel(uint8_t channel) __attribute__((always_inline));
-  static void _startTimer() __attribute__((always_inline));
-  static void _stopTimer() __attribute__((always_inline));
+  static void _setChannel(uint8_t channel);
+  static void _startTimer();
+  static void _stopTimer();
   static bool auto_trigger_on_;
   static uint8_t* channels_;
   static uint8_t channel_index_;
